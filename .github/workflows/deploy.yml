@@ -1,0 +1,43 @@
+name: Deploy to Production Server
+
+on:
+  push:
+    # Запускать этот процесс при пуше в основную ветку
+    branches:
+      - main 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        # SSH-соединение с сервером
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST_IP }}
+          username: gfm # <-- Ваш логин на Ubuntu Server
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # 1. Перейти в каталог проекта
+            cd ~/projects/backend
+            
+            # 2. Получить последние изменения с GitHub
+            git pull origin main
+            
+            # 3. Выполнить миграции Composer
+            # Выполнение composer install
+            docker compose exec backend composer install
+            
+            # 4. Выполнить миграции БД и очистку кэша (если нужно)
+            # ВНИМАНИЕ: Если миграция требует даунтайма, это может быть рискованно!
+            docker compose exec backend php artisan migrate --force
+            docker compose exec backend php artisan cache:clear
+            
+            # 5. Сборка и развертывание с нулевым простоем
+            # Traefik автоматически переключит трафик на новый контейнер
+            docker compose up -d --build
+            
+            echo "Deployment finished successfully!"

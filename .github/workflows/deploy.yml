@@ -4,7 +4,7 @@ on:
   push:
     # Запускать этот процесс при пуше в основную ветку
     branches:
-      - main 
+      - master
 
 jobs:
   deploy:

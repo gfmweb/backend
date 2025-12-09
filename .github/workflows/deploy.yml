@@ -17,8 +17,8 @@ jobs:
       - name: Deploy to Server
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.HOST_IP }}
-          username: gfm # <-- Ваш логин на Ubuntu Server
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }} # <-- Ваш логин на Ubuntu Server
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # 1. Перейти в каталог проекта

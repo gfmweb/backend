@@ -9,3 +9,7 @@ Route::get('/', function () {
 Route::get('health', function () {
     return response(['ok']);
 });
+
+Route::get('test', function () {
+    return response(['ok_test']);
+});

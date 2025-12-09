@@ -22,7 +22,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # 1. Перейти в каталог проекта
-            cd ~/projects/backend
+            cd ~/var/www/projects/backend
             
             # 2. Получить последние изменения с GitHub
             git pull origin main

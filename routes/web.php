@@ -11,5 +11,5 @@ Route::get('health', function () {
 });
 
 Route::get('test', function () {
-    return response(['ok_test']);
+    return response(['ok_test_more']);
 });
